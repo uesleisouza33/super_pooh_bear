@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "@tailwindcss/cli": "^4.2.1",
+    "tailwindcss": "^4.2.1"
+  },
+  "name": "super_pooh_bear",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "dev": "npx @tailwindcss/cli -i ./input/input.css -o ./output/output.css --watch"
+  },
+  "keywords": [],
+  "author": "Ueslei Carvalho",
+  "license": "MIT",
+  "description": ""
+}
