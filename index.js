@@ -1,32 +1,47 @@
+import Game from "./models/Game.js";
+import HoneyPot from "./models/HoneyPot.js";
 import Pooh from "./models/Pooh.js";
 
+
 let canvas = document.getElementById("myCanvas");
-let ctx = canvas.getContext("2d");
+
+let game = new Game(canvas);
 
 let keys = {};
 
 document.addEventListener("keydown", (e) => (keys[e.key] = true));
 document.addEventListener("keyup", (e) => (keys[e.key] = false));
 
-let poohInfo = { x: 50, y: 200, width: 50, height: 50, color: "yellow" };
-let pooh = new Pooh(poohInfo);
-
-function update() {
-  
+function loadImage(src) {
+  return new Promise((resolve) => {
+    let img = new Image();
+    img.src = src;
+    img.onload = () => resolve(img);
+  });
 }
 
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = 'green'
-  ctx.fillRect(0, 650, 1400, 200)
-  ctx.fillStyle = pooh.color;
-  ctx.fillRect(pooh.x, pooh.y, pooh.width, pooh.height);
+async function init() {
+  const poohImg = await loadImage("./assets/pooh.png");
+  const honeyPotImg = await loadImage("./assets/pote.png")
+
+  let pooh = new Pooh(200, 500, poohImg, keys);
+  let honeyPot1 = new HoneyPot(600, 400, honeyPotImg)
+  let honeyPot2 = new HoneyPot(700, 250, honeyPotImg)
+  let honeyPot3 = new HoneyPot(900, 300, honeyPotImg)
+
+  game.add(pooh);
+  game.add(honeyPot1)
+  game.add(honeyPot2)
+  game.add(honeyPot3)
+
+  loop();
 }
 
-function gameLoop() {
-  update();
-  draw();
-  requestAnimationFrame(gameLoop);
+function loop() {
+  game.update();
+  game.draw();
+
+  requestAnimationFrame(loop);
 }
 
-gameLoop();
+init();
