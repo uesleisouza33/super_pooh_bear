@@ -14,7 +14,9 @@ export default class Pooh {
 
     this.img = this.animations[this.state].img;
 
-    this.frameWidth = Math.floor(this.img.width / animations.frames);
+    this.frameWidth = Math.floor(
+      this.img.width / this.animations[this.state].frames
+    );
     this.frameHeight = this.img.height;
 
     // espacamento
@@ -22,7 +24,7 @@ export default class Pooh {
 
     this.frameX = 0;
     this.frameTimer = 0;
-    this.frameInterval = 10;
+    this.frameInterval = 100;
 
     // Física
     this.velX = 0;
@@ -38,7 +40,8 @@ export default class Pooh {
     this.facing = 1;
   }
 
-  update() {
+  update(deltaTime) {
+    this.deltaTime = deltaTime;
     // ===== MOVIMENTO =====
     if (this.keys["D"] || this.keys["d"]) {
       this.velX += this.acceleration;
@@ -87,7 +90,7 @@ export default class Pooh {
       this.state = "jump";
     } else if (Math.abs(this.velX) > 0.2) {
       this.state = "walk";
-      this.spacing = 1.5; 
+      this.spacing = 1.5;
     } else {
       this.state = "idle";
     }
@@ -97,9 +100,9 @@ export default class Pooh {
 
   animate() {
     const anim = this.animations[this.state];
+    this.frameInterval = anim.speed;
     if (!anim) return;
 
-    // troca de animação
     if (this.state !== this.lastState) {
       this.frameX = 0;
       this.frameTimer = 0;
@@ -110,14 +113,20 @@ export default class Pooh {
       this.frameHeight = this.img.height;
     }
 
-    this.frameTimer++;
+    this.frameTimer += this.deltaTime;
 
     if (this.frameTimer > this.frameInterval) {
       this.frameX++;
       this.frameTimer = 0;
 
-      if (this.frameX >= anim.frames) {
-        this.frameX = 0;
+      if (this.state === "jump") {
+        if (this.frameX >= anim.frames) {
+          this.frameX = anim.frames - 1;
+        }
+      } else {
+        if (this.frameX >= anim.frames) {
+          this.frameX = 0;
+        }
       }
     }
   }
@@ -130,7 +139,7 @@ export default class Pooh {
 
     ctx.drawImage(
       this.img,
-      Math.floor(this.frameX * (this.frameWidth + this.spacing)),
+      Math.floor(this.frameX * (this.frameWidth)),
       0,
       this.frameWidth,
       this.frameHeight,
