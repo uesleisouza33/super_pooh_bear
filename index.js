@@ -1,6 +1,6 @@
+import Pooh from "./models/Character.js";
 import Game from "./models/Game.js";
 import HoneyPot from "./models/HoneyPot.js";
-import Pooh from "./models/Pooh.js";
 
 
 let canvas = document.getElementById("myCanvas");
@@ -21,10 +21,24 @@ function loadImage(src) {
 }
 
 async function init() {
-  const poohImg = await loadImage("./assets/pooh.png");
+  // const poohImg = await loadImage("./assets/pooh_walking.png");
   const honeyPotImg = await loadImage("./assets/pote.png")
 
-  let pooh = new Pooh(200, 500, poohImg, keys);
+  const pooh = new Pooh(100, 100, {
+    idle: {
+      img: document.getElementById("idle"),
+      frames: 3
+    },
+    walk: {
+      img: document.getElementById("walk"),
+      frames: 8
+    },
+    jump: {
+      img: document.getElementById("jump"),
+      frames: 10
+    }
+  }, keys);
+
   let honeyPot1 = new HoneyPot(600, 400, honeyPotImg)
   let honeyPot2 = new HoneyPot(700, 250, honeyPotImg)
   let honeyPot3 = new HoneyPot(900, 300, honeyPotImg)
