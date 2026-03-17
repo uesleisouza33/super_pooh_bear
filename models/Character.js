@@ -4,8 +4,8 @@ export default class Pooh {
     this.y = y;
     this.keys = keys;
 
-    this.w = 72;
-    this.h = 72;
+    this.w = 48;
+    this.h = 48;
 
     // === ANIMAÇÕES ===
     this.animations = animations;
@@ -14,12 +14,15 @@ export default class Pooh {
 
     this.img = this.animations[this.state].img;
 
-    this.frameWidth = Math.floor(this.img.width / this.animations[this.state].frames);
+    this.frameWidth = Math.floor(this.img.width / animations.frames);
     this.frameHeight = this.img.height;
+
+    // espacamento
+    this.spacing = 0;
 
     this.frameX = 0;
     this.frameTimer = 0;
-    this.frameInterval = 6;
+    this.frameInterval = 10;
 
     // Física
     this.velX = 0;
@@ -27,7 +30,7 @@ export default class Pooh {
 
     this.acceleration = 0.5;
     this.maxSpeed = 8;
-    this.friction = 0.90;
+    this.friction = 0.9;
     this.gravity = 0.8;
     this.jumpForce = -15;
 
@@ -37,12 +40,12 @@ export default class Pooh {
 
   update() {
     // ===== MOVIMENTO =====
-    if (this.keys && this.keys["d"]) {
+    if (this.keys["D"] || this.keys["d"]) {
       this.velX += this.acceleration;
       this.facing = 1;
     }
 
-    if (this.keys && this.keys["a"]) {
+    if (this.keys["A"] || this.keys["a"]) {
       this.velX -= this.acceleration;
       this.facing = -1;
     }
@@ -84,6 +87,7 @@ export default class Pooh {
       this.state = "jump";
     } else if (Math.abs(this.velX) > 0.2) {
       this.state = "walk";
+      this.spacing = 1.5; 
     } else {
       this.state = "idle";
     }
@@ -126,7 +130,7 @@ export default class Pooh {
 
     ctx.drawImage(
       this.img,
-      this.frameX * this.frameWidth,
+      Math.floor(this.frameX * (this.frameWidth + this.spacing)),
       0,
       this.frameWidth,
       this.frameHeight,
