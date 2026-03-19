@@ -34,7 +34,7 @@ export default class Pooh extends Character {
     };
   }
 
-  update(camera, screenWidth) {
+  update() {
     // movimento
     if (this.keys["d"]) {
       this.x += 5;
@@ -73,8 +73,6 @@ export default class Pooh extends Character {
       this.velY = this.jumpForce;
       this.state = "jump";
     }
-
-    camera.x = this.x - (screenWidth / 2)
 
     // animação
     this.animate(this.animations[this.state]);

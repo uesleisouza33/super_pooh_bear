@@ -27,10 +27,10 @@ export default class Character {
     this.img.src = config.path + this.frame + ".png";
   }
 
-  draw(ctx, camera) {
+  draw(ctx) {
     ctx.save();
 
-    ctx.translate(this.x - camera.x + this.w / 2, this.y + this.h / 2);
+    ctx.translate(this.x -this.w / 2, this.y + this.h / 2);
     ctx.scale(this.facing, 1);
 
     ctx.drawImage(this.img, -this.w / 2, -this.h / 2, this.w, this.h);

@@ -18,9 +18,6 @@ document.addEventListener("keyup", (e) => {
   keys[e.key.toLowerCase()] = false;
 });
 
-const camera = {
-  x: 0,
-};
 
 // ===== OBJETOS =====
 const pooh = new Pooh(100, 100, keys);
@@ -39,15 +36,15 @@ function loop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // fundo
-  ctx.drawImage(background, -camera.x, 0, canvas.width, canvas.height);
+  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-  pooh.update(camera, canvas.width);
+  pooh.update();
 
   for (let pot of honeyPots) {
     pot.update?.(); // caso tenha update
   }
 
-  pooh.draw(ctx, camera);
+  pooh.draw(ctx);
 
   for (let pot of honeyPots) {
     pot.draw(ctx);
