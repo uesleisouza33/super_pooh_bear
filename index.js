@@ -1,11 +1,15 @@
 import Pooh from "./models/Pooh.js";
 import HoneyPot from "./models/HoneyPot.js";
+import Platform from "./models/Plataform.js";
+
 
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
-const background = new Image();
-background.src = "./assets/background.jpg";
+// const background = new Image();
+// background.src = "./assets/background.jpg";
+const platformImg = new Image();
+platformImg.src = "./assets/plataforms/grass_plataform.png";
 
 // ===== INPUT =====
 const keys = {};
@@ -31,6 +35,12 @@ const honeyPots = [
   new HoneyPot(900, 300, honeyPotImg),
 ];
 
+const plataforms = [
+  new Platform(600, 400, 200, 40),
+  new Platform(700, 300, 120, 40)
+]
+
+
 // ===== LOOP =====
 function loop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -38,10 +48,13 @@ function loop() {
   // fundo
   ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-  pooh.update();
+  pooh.update(plataforms);
 
+  for (const plat of plataforms) {
+    plat.draw(ctx)
+  }
   for (let pot of honeyPots) {
-    pot.update?.(); // caso tenha update
+    pot.update?.(); 
   }
 
   pooh.draw(ctx);

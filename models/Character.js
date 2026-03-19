@@ -26,14 +26,19 @@ export default class Character {
 
     this.img.src = config.path + this.frame + ".png";
   }
-
+  
   draw(ctx) {
     ctx.save();
 
-    ctx.translate(this.x -this.w / 2, this.y + this.h / 2);
     ctx.scale(this.facing, 1);
 
-    ctx.drawImage(this.img, -this.w / 2, -this.h / 2, this.w, this.h);
+    ctx.drawImage(
+      this.img,
+      this.facing === 1 ? this.x : -this.x - this.w,
+      this.y,
+      this.w,
+      this.h
+    );
 
     ctx.restore();
   }

@@ -14,7 +14,9 @@ export default class Pooh extends Character {
     this.onGround = false;
     this.facing = 1;
 
-    // animações
+    this.prevY = this.y;
+    this.hitboxHeight = this.h - 10;
+
     this.animations = {
       idle: {
         path: "./assets/idle/pooh_idle",
@@ -34,47 +36,69 @@ export default class Pooh extends Character {
     };
   }
 
-  update() {
-    // movimento
+  update(platforms) {
+    // ===== salvar posição anterior
+    this.prevY = this.y;
+
+    // ===== movimento horizontal
     if (this.keys["d"]) {
-      this.x += 5;
+      this.velX = 5;
       this.facing = 1;
-    }
-
-    if (this.keys["a"]) {
-      this.x -= 5;
+    } else if (this.keys["a"]) {
+      this.velX = -5;
       this.facing = -1;
+    } else {
+      this.velX = 0;
     }
 
+    this.x += this.velX;
+
+    // ===== gravidade
+    this.velY += this.gravity;
+    this.y += this.velY;
+
+    /// colisão com plataformas
+    this.onGround = false;
+
+    for (let p of platforms) {
+      let playerBottom = this.y + this.h;
+      let prevBottom = this.prevY + this.h;
+
+      let playerRight = this.x + this.w;
+      let playerLeft = this.x;
+
+      if (playerRight > p.x && playerLeft < p.x + p.w) {
+        if (this.velY >= 0 && prevBottom <= p.y && playerBottom >= p.y) {
+          this.y = p.y - this.h;
+          this.velY = 0;
+          this.onGround = true;
+        }
+      }
+    }
+
+    // ===== chão fallback
+    let ground = 510;
+    if (this.y + this.h > ground) {
+      this.y = ground - this.h;
+      this.velY = 0;
+      this.onGround = true;
+    }
+
+    // ===== pulo
+    if (this.keys[" "] && this.onGround) {
+      this.velY = this.jumpForce;
+    }
+
+    // ===== estados
     if (!this.onGround) {
       this.state = "jump";
-    } else if (this.keys["d"] || this.keys["a"]) {
+    } else if (this.velX !== 0) {
       this.state = "walk";
     } else {
       this.state = "idle";
     }
 
-    // gravidade simples
-    this.velY += this.gravity;
-    this.y += this.velY;
-
-    let ground = 510;
-
-    if (this.y + this.h > ground) {
-      this.y = ground - this.h;
-      this.velY = 0;
-      this.onGround = true;
-    } else {
-      this.onGround = false;
-    }
-
-    // pulo
-    if (this.keys[" "] && this.onGround) {
-      this.velY = this.jumpForce;
-      this.state = "jump";
-    }
-
-    // animação
+    // ===== animação
     this.animate(this.animations[this.state]);
   }
 }
