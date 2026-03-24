@@ -57,9 +57,11 @@ export default class Pooh extends Character {
     this.velY += this.gravity;
     this.y += this.velY;
 
-    /// colisão com plataformas
+    // ===== reset
     this.onGround = false;
+    this.onPlatform = null;
 
+    // ===== colisão com plataformas
     for (let p of platforms) {
       let playerBottom = this.y + this.h;
       let prevBottom = this.prevY + this.h;
@@ -72,6 +74,9 @@ export default class Pooh extends Character {
           this.y = p.y - this.h;
           this.velY = 0;
           this.onGround = true;
+
+          // 🔥 NOVO
+          this.onPlatform = p;
         }
       }
     }
@@ -82,6 +87,16 @@ export default class Pooh extends Character {
       this.y = ground - this.h;
       this.velY = 0;
       this.onGround = true;
+
+      this.onPlatform = null;
+    }
+
+    // ===== 🔥 ANDAR JUNTO COM PLATAFORMA
+    if (this.onPlatform && this.onPlatform.getVelocity) {
+      const vel = this.onPlatform.getVelocity();
+
+      this.x += vel.vx;
+      this.y += vel.vy;
     }
 
     // ===== pulo
