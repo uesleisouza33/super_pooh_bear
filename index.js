@@ -3,16 +3,39 @@ import HoneyPot from "./models/HoneyPot.js";
 import Plataform from "./models/Plataform.js";
 
 window.onload = () => {
-  console.log("INDEX INICIOU");
-
   const canvas = document.getElementById("myCanvas");
   const ctx = canvas.getContext("2d");
 
-  const background = new Image();
-  background.src = "./assets/background.jpg";
+  let loaded = 0;
+  const total = 3;
 
-  const platformImg = new Image();
-  platformImg.src = "./assets/plataforms/grass_plataform.png";
+  function checkLoaded() {
+    loaded++;
+    if (loaded === total) {
+      console.log("TUDO CARREGADO");
+      loop();
+    }
+  }
+
+  function loadImage(src) {
+    const img = new Image();
+
+    img.onload = checkLoaded;
+    img.onerror = () => console.error("Erro ao carregar:", src);
+
+    img.src = src;
+
+    
+    if (img.complete) {
+      checkLoaded();
+    }
+
+    return img;
+  }
+
+  const background = loadImage("./assets/background.jpg");
+  const platformImg = loadImage("./assets/plataforms/grass_plataform.png");
+  const honeyPotImg = loadImage("./assets/honeyPot.png");
 
   const keys = {};
 
@@ -25,9 +48,6 @@ window.onload = () => {
   });
 
   const pooh = new Pooh(100, 100, keys);
-
-  const honeyPotImg = new Image();
-  honeyPotImg.src = "./assets/honeyPot.png";
 
   const honeyPots = [
     new HoneyPot(600, 400, honeyPotImg),
@@ -75,11 +95,5 @@ window.onload = () => {
     requestAnimationFrame(loop);
   }
 
-  background.onload = () => {
-    platformImg.onload = () => {
-      honeyPotImg.onload = () => {
-        loop();
-      };
-    };
-  };
+
 };
