@@ -1,6 +1,6 @@
 import Pooh from "./models/Pooh.js";
 import HoneyPot from "./models/HoneyPot.js";
-import Platform from "./models/Plataform.js";
+import Plataform from "./models/Plataform.js";
 
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
@@ -35,24 +35,24 @@ const honeyPots = [
 
 const plataforms = [
 
-  new Platform(300, 400, 120, 40, platformImg),
-  new Platform(550, 280, 120, 40, platformImg),
+  new Plataform(300, 400, 120, 40, platformImg),
+  new Plataform(550, 280, 120, 40, platformImg),
 
-  new Platform(200, 200, 120, 40, platformImg, {
+  new Plataform(200, 200, 120, 40, platformImg, {
     type: "moving",
     axis: "horizontal",
     range: 150,
     speed: 2,
   }),
 
-  new Platform(700, 350, 120, 40, platformImg, {
+  new Plataform(700, 350, 120, 40, platformImg, {
     type: "moving",
     axis: "vertical",
     range: 120,
     speed: 1.5,
   }),
 
-  new Platform(500, 150, 100, 40, platformImg),
+  new Plataform(500, 150, 100, 40, platformImg),
 ];
 
 // ===== LOOP =====

@@ -8,7 +8,7 @@
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
-    "dev": "npx @tailwindcss/cli -i ./input/input.css -o ./output/output.css --watch"
+    "dev": "npx @tailwindcss/cli -i ./public/input/input.css -o ./public/output/output.css --watch"
   },
   "keywords": [],
   "author": "Ueslei Carvalho",
