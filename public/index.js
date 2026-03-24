@@ -1,85 +1,78 @@
 import Pooh from "./models/Pooh.js";
-import HoneyPot from "./models/HoneyPot.js";
-import Plataform from "./models/Plataform.js";
+import HoneyPot from './models/HoneyPot.js'
+import Plataform from './models/Plataform.js'
 
-const canvas = document.getElementById("myCanvas");
-const ctx = canvas.getContext("2d");
+window.onload = () => {
 
-const background = new Image();
-background.src = "./assets/background.jpg";
-const platformImg = new Image();
-platformImg.src = "./assets/plataforms/grass_plataform.png";
+  const canvas = document.getElementById("myCanvas");
+  const ctx = canvas.getContext("2d");
 
-// ===== INPUT =====
-const keys = {};
+  const background = new Image();
+  background.src = "./assets/background.jpg";
 
-document.addEventListener("keydown", (e) => {
-  keys[e.key.toLowerCase()] = true;
-});
+  const platformImg = new Image();
+  platformImg.src = "./assets/plataforms/grass_plataform.png";
 
-document.addEventListener("keyup", (e) => {
-  keys[e.key.toLowerCase()] = false;
-});
+  const keys = {};
 
-// ===== OBJETOS =====
-const pooh = new Pooh(100, 100, keys);
+  document.addEventListener("keydown", (e) => {
+    keys[e.key.toLowerCase()] = true;
+  });
 
-const honeyPotImg = new Image();
-honeyPotImg.src = "./assets/honeyPot.png";
+  document.addEventListener("keyup", (e) => {
+    keys[e.key.toLowerCase()] = false;
+  });
 
-const honeyPots = [
-  new HoneyPot(600, 400, honeyPotImg),
-  new HoneyPot(700, 250, honeyPotImg),
-  new HoneyPot(900, 300, honeyPotImg),
-];
+  const pooh = new Pooh(100, 100, keys);
 
-const plataforms = [
+  const honeyPotImg = new Image();
+  honeyPotImg.src = "./assets/honeyPot.png";
 
-  new Plataform(300, 400, 120, 40, platformImg),
-  new Plataform(550, 280, 120, 40, platformImg),
+  const honeyPots = [
+    new HoneyPot(600, 400, honeyPotImg),
+    new HoneyPot(700, 250, honeyPotImg),
+    new HoneyPot(900, 300, honeyPotImg),
+  ];
 
-  new Plataform(200, 200, 120, 40, platformImg, {
-    type: "moving",
-    axis: "horizontal",
-    range: 150,
-    speed: 2,
-  }),
+  const plataforms = [
+    new Plataform(300, 400, 120, 40, platformImg),
+    new Plataform(550, 280, 120, 40, platformImg),
+    new Plataform(200, 200, 120, 40, platformImg, {
+      type: "moving",
+      axis: "horizontal",
+      range: 150,
+      speed: 2,
+    }),
+    new Plataform(700, 350, 120, 40, platformImg, {
+      type: "moving",
+      axis: "vertical",
+      range: 120,
+      speed: 1.5,
+    }),
+    new Plataform(500, 150, 100, 40, platformImg),
+  ];
 
-  new Plataform(700, 350, 120, 40, platformImg, {
-    type: "moving",
-    axis: "vertical",
-    range: 120,
-    speed: 1.5,
-  }),
+  function loop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  new Plataform(500, 150, 100, 40, platformImg),
-];
+    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-// ===== LOOP =====
-function loop() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pooh.update(plataforms);
 
-  // fundo
-  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+    for (const plat of plataforms) {
+      plat.update();
+      plat.draw(ctx);
+    }
 
-  pooh.update(plataforms);
+    for (let pot of honeyPots) {
+      pot.update?.();
+      pot.draw(ctx);
+    }
 
-  for (const plat of plataforms) {
-    plat.update();
-    plat.draw(ctx);
-  }
-  for (let pot of honeyPots) {
-    pot.update?.();
-  }
+    pooh.draw(ctx);
 
-  pooh.draw(ctx);
-
-  for (let pot of honeyPots) {
-    pot.draw(ctx);
+    requestAnimationFrame(loop);
   }
 
-  requestAnimationFrame(loop);
-}
-
-// ===== START =====
-loop();
+  loop();
+};
