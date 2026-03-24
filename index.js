@@ -1,8 +1,9 @@
 import Pooh from "./models/Pooh.js";
-import HoneyPot from './models/HoneyPot.js'
-import Plataform from './models/Plataform.js'
+import HoneyPot from "./models/HoneyPot.js";
+import Plataform from "./models/Plataform.js";
 
 window.onload = () => {
+  console.log("INDEX INICIOU");
 
   const canvas = document.getElementById("myCanvas");
   const ctx = canvas.getContext("2d");
@@ -74,5 +75,11 @@ window.onload = () => {
     requestAnimationFrame(loop);
   }
 
-  loop();
+  background.onload = () => {
+    platformImg.onload = () => {
+      honeyPotImg.onload = () => {
+        loop();
+      };
+    };
+  };
 };
