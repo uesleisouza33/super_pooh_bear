@@ -26,18 +26,21 @@ export default class Character {
 
     this.img.src = config.path + this.frame + ".png";
   }
-  
-  draw(ctx) {
+
+  draw(ctx, camera) {
     ctx.save();
 
     ctx.scale(this.facing, 1);
 
+    const drawX = this.x - camera.x;
+    const drawY = this.y - camera.y;
+
     ctx.drawImage(
       this.img,
-      this.facing === 1 ? this.x : -this.x - this.w,
-      this.y,
+      this.facing === 1 ? drawX : -drawX - this.w,
+      drawY,
       this.w,
-      this.h
+      this.h,
     );
 
     ctx.restore();

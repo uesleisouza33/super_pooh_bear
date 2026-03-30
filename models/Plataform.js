@@ -57,14 +57,13 @@ export default class Plataform {
     }
   }
 
-  draw(ctx) {
-    if (!this.image) return;
-
-    const tileWidth = this.image.width * this.scale; // escala
-    const tileHeight = this.image.height * this.scale;
-
-    for (let i = 0; i < this.w; i += tileWidth) {
-      ctx.drawImage(this.image, this.x + i, this.y, tileWidth, tileHeight);
-    }
-  }
+  draw(ctx, camera) {
+  ctx.drawImage(
+    this.image,
+    this.x - camera.x,
+    this.y - camera.y,
+    this.w,
+    this.h
+  );
+}
 }

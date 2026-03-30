@@ -10,11 +10,32 @@ export default class HoneyPot {
     this.collected = false;
   }
 
-  update(){}
+  update(player) {
+    if (this.collected) return;
 
-  draw(ctx) {
-    if (!this.collected) {
-      ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
+    // colisão
+    if (
+      player.x < this.x + this.w &&
+      player.x + player.w > this.x &&
+      player.y < this.y + this.h &&
+      player.y + player.h > this.y
+    ) {
+      this.collected = true;
+      return true;
     }
+
+    return false;
+  }
+
+  draw(ctx, camera) {
+    if (this.collected) return;
+
+    ctx.drawImage(
+      this.img,
+      this.x - camera.x,
+      this.y - camera.y,
+      this.w,
+      this.h
+    );
   }
 }

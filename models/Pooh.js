@@ -52,6 +52,8 @@ export default class Pooh extends Character {
     }
 
     this.x += this.velX;
+    const worldWidth = 2000;
+    this.x = Math.max(0, Math.min(this.x, worldWidth - this.w));
 
     // ===== gravidade
     this.velY += this.gravity;
@@ -82,7 +84,7 @@ export default class Pooh extends Character {
     }
 
     // ===== chão fallback
-    let ground = 510;
+    let ground = 550;
     if (this.y + this.h > ground) {
       this.y = ground - this.h;
       this.velY = 0;
@@ -91,7 +93,6 @@ export default class Pooh extends Character {
       this.onPlatform = null;
     }
 
-    // ===== 🔥 ANDAR JUNTO COM PLATAFORMA
     if (this.onPlatform && this.onPlatform.getVelocity) {
       const vel = this.onPlatform.getVelocity();
 
