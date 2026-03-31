@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./favicon-16x16.png"
+    />
+    <link rel="manifest" href="./site.webmanifest" />
+    <title>SuperPoohBear 64</title>
+  </head>
+  <body>
+    <div class="bg-stone-800 flex justify-center min-h-screen">
+      <canvas
+        class="m-4 bg-sky-800"
+        id="myCanvas"
+        width="1400"
+        height="900"
+        style="border: 1px solid #ffffff"
+      >
+        Your browser does not support canvas
+      </canvas>
+    </div>
+
+    <video id="finalVideo" style="display: none" width="100%" height="100%">
+      <source src="./assets/sample.mp4" type="video/mp4" />
+    </video>
+
+    <style>
+      #finalVideo {
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        width: 100vw;
+        height: 100vh;
+
+        object-fit: cover; /* mantém proporção bonita */
+
+        display: none;
+        z-index: 999;
+      }
+    </style>
+
+    <script type="module" src="./index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: "Press Start 2P", cursive;
+}
+
+/* 🌄 FUNDO */
+.bg {
+  position: fixed; /* 🔥 ESSENCIAL */
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  z-index: 0;
+}
+
+/* 🎮 MENU */
+.menu {
+  position: relative; /* 🔥 ESSENCIAL */
+  z-index: 10;
+
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: -1;
+}
+
+/* 🐻 LOGO */
+.logo {
+  width: 400px;
+  margin-bottom: 40px;
+
+  animation: float 3s ease-in-out infinite;
+}
+
+/* 🎯 BOTÕES */
+button {
+  width: 260px;
+  margin: 10px;
+
+  padding: 15px;
+
+  font-size: 14px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: linear-gradient(#ffd54f, #ffb300);
+  color: #5d3a00;
+
+  box-shadow: 0 6px 0 #c68400;
+
+  cursor: pointer;
+
+  transition: 0.15s;
+}
+
+/* ✨ HOVER */
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 9px 0 #c68400;
+}
+
+/* 👇 CLICK */
+button:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #c68400;
+}
+
+/* 🎬 ANIMAÇÃO */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
