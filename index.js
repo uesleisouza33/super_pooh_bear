@@ -12,7 +12,7 @@ window.onload = () => {
   let loaded = 0;
   const total = 9;
 
-  let currentLevel = 5;
+  let currentLevel = 1;
   let collected = 0;
   let totalKeys = 0;
   const maxKeys = 5;
