@@ -40,11 +40,11 @@ export default class Pooh extends Character {
     // ===== salvar posição anterior
     this.prevY = this.y;
 
-    // ===== movimento horizontal
-    if (this.keys["d"]) {
+    // ===== movimento horizontal 
+    if (this.keys["d"] || this.keys["arrowright"]) {
       this.velX = 5;
       this.facing = 1;
-    } else if (this.keys["a"]) {
+    } else if (this.keys["a"] || this.keys["arrowleft"]) {
       this.velX = -5;
       this.facing = -1;
     } else {
@@ -77,7 +77,6 @@ export default class Pooh extends Character {
           this.velY = 0;
           this.onGround = true;
 
-          // 🔥 NOVO
           this.onPlatform = p;
         }
       }
@@ -101,7 +100,7 @@ export default class Pooh extends Character {
     }
 
     // ===== pulo
-    if (this.keys[" "] && this.onGround) {
+    if (this.keys[" "] && this.onGround || this.keys["arrowup"] && this.onGround) {
       this.velY = this.jumpForce;
     }
 

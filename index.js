@@ -20,7 +20,7 @@ window.onload = () => {
   let keySpawned = false;
   let keyCollected = false;
 
-  let timeLeft = 120;
+  let timeLeft = 185;
   let lastTime = Date.now();
   let gameOver = false;
   let changingLevel = false;
@@ -150,21 +150,18 @@ window.onload = () => {
       if (e.key.toLowerCase() === "r") {
         loadLevel(currentLevel);
         gameOver = false;
-        timeLeft = 120;
+        timeLeft = 185
       }
 
       if (e.key.toLowerCase() === "s") {
         currentLevel = 1;
         loadLevel(currentLevel);
         gameOver = false;
-        timeLeft = 120;
+        timeLeft = 185;
       }
 
       if (e.key.toLowerCase() === "h") {
-        currentLevel = 1;
-        loadLevel(currentLevel);
-        gameOver = false;
-        timeLeft = 120;
+        window.location.replace('index.html')
       }
     }
   });
@@ -473,19 +470,24 @@ window.onload = () => {
       //
       ctx.font = "14px Arial";
       ctx.fillText(
-        "ENTER para continuar...",
-        canvas.width - 220,
+        "ENTER para continuar... | ",
+        canvas.width - 425,
+        canvas.height - 20,
+      );
+      ctx.fillText(
+        "  Pressione P para pular as falas",
+        canvas.width - 270,
         canvas.height - 20,
       );
 
       document.addEventListener("keydown", (e) => {
-        if (e.key.toLowerCase() === "h") {
+        if (e.key.toLowerCase() === "p") {
           inCutscene = false;
           currentLevel = 1;
           loadLevel(currentLevel);
           gameOver = false;
-          timeLeft = 120;
-          
+          timeLeft = 185;
+
         }
       });
 
@@ -493,13 +495,16 @@ window.onload = () => {
     }
 
     // time
-    if (!gameOver) {
+    if (!gameOver && !inCutscene) {
       const now = Date.now();
       const delta = (now - lastTime) / 1000;
       lastTime = now;
 
       timeLeft -= delta;
       if (timeLeft <= 0) gameOver = true;
+      else {
+        lastTime = Date.now();
+      }
     }
 
     if (invulnerable) {
