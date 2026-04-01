@@ -1,18 +1,78 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Sobre</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <div class="menu">
-      <h1>Sobre o Jogo</h1>
-      <p>Um jogo inspirado em aventuras de plataforma com coleta e desafios.</p>
 
-      <button onclick="goBack()">Voltar</button>
+<head>
+  <meta charset="UTF-8" />
+  <title>Instruções - Super Pooh Adventure</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/instructions.css" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <img src="./assets/background.jpg" class="bg" />
+
+  <div class="container">
+
+    <h1>INSTRUÇÕES</h1>
+
+    <div class="box">
+
+      <!-- 1 -->
+      <section>
+        <h2>1. HISTÓRIA</h2>
+        <p>
+          O Leitão foi capturado e está preso em algum lugar do mapa.
+          Pooh precisa coletar todo o mel espalhado para encontrar a chave
+          e libertar seu amigo antes que o tempo acabe.
+        </p>
+      </section>
+
+      <!-- 2 -->
+      <section>
+        <h2>2. CONTROLES</h2>
+        <p>⬅ ➡ ou A / D → Andar</p>
+        <p>⬆ ou ESPAÇO → Pular</p>
+        <p>ENTER → Avançar diálogos</p>
+      </section>
+
+      <!-- 3 -->
+      <section>
+        <h2>3. INIMIGOS</h2>
+        <p>🐝 Abelhas tiram vida ao encostar</p>
+        <p>🗡️ Espinhos causam morte instantânea</p>
+        <p>Evite contato sempre que possível</p>
+      </section>
+
+      <!-- 4 -->
+      <section>
+        <h2>4. MEL E CHAVE</h2>
+        <p>🍯 Colete 5 potes de mel</p>
+        <p>🔑 Uma chave aparecerá no mapa</p>
+        <p>Pegue a chave para avançar de fase</p>
+      </section>
+
+      <!-- 5 -->
+      <section>
+        <h2>5. DICAS</h2>
+        <p>Use plataformas móveis com cuidado</p>
+        <p>Planeje seus pulos antes de agir</p>
+        <p>O tempo é limitado — seja rápido</p>
+      </section>
+
     </div>
 
-    <script src="./menu.js"></script>
-  </body>
+    <button onclick="goBack()">⬅ VOLTAR</button>
+
+  </div>
+
+  <script>
+    function goBack() {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+
 </html>
