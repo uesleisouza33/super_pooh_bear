@@ -637,7 +637,7 @@ window.onload = () => {
 
     // key spawn
     if (collected >= 5 && !keySpawned) {
-      key = new Key(1800, 50, keyImg);
+      key = new Key(1800, 300, keyImg);
       keySpawned = true;
 
       showKeyMessage = true;
