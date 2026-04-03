@@ -1,4 +1,5 @@
 import Character from "./Character.js";
+import { playJumpSound } from "./AudioManager.js";
 
 export default class Pooh extends Character {
   constructor(x, y, keys) {
@@ -83,7 +84,7 @@ export default class Pooh extends Character {
     }
 
     // ===== chão fallback
-    let ground = 550;
+    let ground = 800;
     if (this.y + this.h > ground) {
       this.y = ground - this.h;
       this.velY = 0;
@@ -100,8 +101,9 @@ export default class Pooh extends Character {
     }
 
     // ===== pulo
-    if (this.keys[" "] && this.onGround || this.keys["arrowup"] && this.onGround) {
+    if ((this.keys[" "] && this.onGround) || (this.keys["arrowup"] && this.onGround)) {
       this.velY = this.jumpForce;
+      playJumpSound();
     }
 
     // ===== estados

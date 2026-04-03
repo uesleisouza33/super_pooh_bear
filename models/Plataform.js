@@ -58,12 +58,13 @@ export default class Plataform {
   }
 
   draw(ctx, camera) {
-  ctx.drawImage(
-    this.image,
-    this.x - camera.x,
-    this.y - camera.y,
-    this.w,
-    this.h
-  );
-}
+    if (!this.image || !this.image.complete) return;
+    ctx.drawImage(
+      this.image,
+      this.x - camera.x,
+      this.y - camera.y,
+      this.w,
+      this.h
+    );
+  }
 }
