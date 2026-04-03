@@ -8,8 +8,23 @@ export default class Character {
     this.frame = 1;
     this.timer = 0;
 
-    this.img = new Image();
     this.state = "idle";
+    this.frameCache = {}; // guarda as Image objects pré-carregadas
+  }
+
+  // Novo método para carregar toda a pasta visual do personagem 1 vez só
+  loadAnimations(animObj) {
+    for (let stateKey in animObj) {
+      this.frameCache[stateKey] = [];
+      const config = animObj[stateKey];
+
+      // Popula o array com as imagens já em cache do navegador
+      for (let i = 1; i <= config.frames; i++) {
+        const img = new Image();
+        img.src = config.path + i + ".png";
+        this.frameCache[stateKey].push(img);
+      }
+    }
   }
 
   animate(config) {
@@ -23,8 +38,7 @@ export default class Character {
     if (this.frame > config.frames) {
       this.frame = 1;
     }
-
-    this.img.src = config.path + this.frame + ".png";
+    // Não atribui src dinâmico mais. Draw() cuidará de puxar do Cache.
   }
 
   draw(ctx, camera) {
@@ -35,13 +49,22 @@ export default class Character {
     const drawX = this.x - camera.x;
     const drawY = this.y - camera.y;
 
-    ctx.drawImage(
-      this.img,
-      this.facing === 1 ? drawX : -drawX - this.w,
-      drawY,
-      this.w,
-      this.h,
-    );
+    // Busca a imagem atual no cache de Quadros
+    const stateCache = this.frameCache[this.state];
+    
+    if (stateCache && stateCache.length > 0) {
+      const currentImg = stateCache[this.frame - 1]; // frame é 1-index, array é 0-index
+
+      if (currentImg && currentImg.complete) {
+        ctx.drawImage(
+          currentImg,
+          this.facing === 1 ? drawX : -drawX - this.w,
+          drawY,
+          this.w,
+          this.h
+        );
+      }
+    }
 
     ctx.restore();
   }

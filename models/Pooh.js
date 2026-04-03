@@ -35,6 +35,9 @@ export default class Pooh extends Character {
         speed: 40,
       },
     };
+
+    // INICIA O PRÉ-CARREGAMENTO (Evita piscadelas e loading infinito no Vercel)
+    this.loadAnimations(this.animations);
   }
 
   update(platforms) {
