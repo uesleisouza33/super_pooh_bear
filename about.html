@@ -1,18 +1,61 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Sobre</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <div class="menu">
-      <h1>Sobre o Jogo</h1>
-      <p>Um jogo inspirado em aventuras de plataforma com coleta e desafios.</p>
 
-      <button onclick="goBack()">Voltar</button>
+<head>
+  <meta charset="UTF-8" />
+  <title>Sobre - Super Pooh 64</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+
+<body class="allow-scroll">
+  <!-- Fundo da tela -->
+  <img src="./assets/background.jpg" class="bg" alt="Fundo" />
+
+  <div class="menu scroll-menu" style="align-items: center; display: flex; flex-direction: column;">
+    <div class="section-header">
+      <span class="icon">🍯</span>
+      <h1>SOBRE O BOSQUE</h1>
     </div>
 
-    <script src="./menu.js"></script>
-  </body>
+    <!-- O Grande Mural do Bosque -->
+    <div class="big-signpost">
+      
+      <!-- Retrato do Desenvolvedor -->
+      <div class="central-portrait-container">
+        <h3 class="signpost-subtitle">🐻 URSO DESENVOLVEDOR</h3>
+        <div class="central-portrait">
+          <img src="./assets/logo_superpoohbear.png" alt="Desenvolvedor Ueslei" />
+        </div>
+        <h2 class="signpost-title">Ueslei Carvalho</h2>
+      </div>
+
+      <!-- Links em blocos botões -->
+      <div class="signpost-social">
+        <a href="https://www.instagram.com/ucarvalhof/" target="_blank">📷 Insta: @ucarvalhof</a>
+        <a href="https://github.com/uesleisouza33" target="_blank">🐙 GitHub: uesleisouza33</a>
+      </div>
+
+      <div class="signpost-separator"></div>
+
+      <!-- Seção do Orientador -->
+      <h3 class="signpost-section-title">🦉 CORUJÃO ORIENTADOR (OWNER)</h3>
+      <h2 class="signpost-title" style="font-size: 20px;">Prof. Carlos</h2>
+      <p class="signpost-body">Sábio do Bosque ajudando nas artes misteriosas da Programação Orientada a Objetos.</p>
+      
+      <div class="signpost-separator"></div>
+
+      <!-- Seção de Tecnologias -->
+      <h3 class="signpost-section-title">🍯 POTE DE TECNOLOGIAS</h3>
+      <p class="signpost-body" style="margin-bottom: 20px;">Forjado com HTML5, Canvas API e JavaScript ES6+ puro.</p>
+      <p class="signpost-body" style="font-size: 9px; opacity: 0.6;">© 2026 Super Pooh 64 - Todos os direitos reservados</p>
+      
+    </div>
+
+    <button onclick="goBack()">🔙 VOLTAR À AVENTURA</button>
+  </div>
+
+  <script src="./menu.js"></script>
+</body>
+
 </html>

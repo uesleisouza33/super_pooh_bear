@@ -3,68 +3,94 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Instruções - Super Pooh Adventure</title>
+  <title>Instruções - Super Pooh 64</title>
 
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/instructions.css" />
-
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body class="allow-scroll">
   <img src="./assets/background.jpg" class="bg" />
 
-  <div class="container">
+  <div class="menu scroll-menu" style="align-items: center; justify-content: flex-start; display: flex; flex-direction: column;">
 
-    <h1>INSTRUÇÕES</h1>
+    <div class="section-header">
+      <span class="icon">📜</span>
+      <h1>GUIA DO BOSQUE</h1>
+    </div>
 
-    <div class="box">
+    <!-- O Grande Mural do Bosque -->
+    <div class="big-signpost">
 
-      <!-- 1 -->
-      <section>
-        <h2>1. HISTÓRIA</h2>
-        <p>
-          O Leitão foi capturado e está preso em algum lugar do mapa.
-          Pooh precisa coletar todo o mel espalhado para encontrar a chave
-          e libertar seu amigo antes que o tempo acabe.
-        </p>
-      </section>
+      <!-- A Busca pelo Leitão -->
+      <h3 class="signpost-section-title" style="font-size: 18px;">📖 A BUSCA PELO LEITÃO</h3>
+      <p class="signpost-body" style="margin-bottom: 30px; font-size: 12px; max-width: 90%;">
+        O Leitão foi capturado e está perdido em algum lugar deste vasto mapa! 
+        Seu objetivo como Pooh é coletar todo o mel espalhado pelo caminho. Com mel suficiente (5 potes), 
+        uma chave aparecerá e você poderá libertar seu melhor amigo antes que o relógio zere.
+      </p>
 
-      <!-- 2 -->
-      <section>
-        <h2>2. CONTROLES</h2>
-        <p>⬅ ➡ ou A / D → Andar</p>
-        <p>⬆ ou ESPAÇO → Pular</p>
-        <p>ENTER → Avançar diálogos</p>
-      </section>
+      <div class="signpost-separator"></div>
 
-      <!-- 3 -->
-      <section>
-        <h2>3. INIMIGOS</h2>
-        <p>🐝 Abelhas tiram vida ao encostar</p>
-        <p>🗡️ Espinhos causam morte instantânea</p>
-        <p>Evite contato sempre que possível</p>
-      </section>
+      <!-- Grade de Informações -->
+      <div class="instructions-grid">
+        
+        <!-- Controles -->
+        <div class="instruction-col">
+          <h3>🎮 COMO SE MOVER</h3>
+          
+          <div class="instruction-item">
+            <span class="instruction-icon">⬅️➡️</span>
+            <span class="instruction-text">Use as Setas (ou A e D) para andar.</span>
+          </div>
+          <div class="instruction-item">
+            <span class="instruction-icon">⬆️</span>
+            <span class="instruction-text">Use a Seta Cima (ou Espaço) para Pular.</span>
+          </div>
+          <div class="instruction-item">
+            <span class="instruction-icon">↩️</span>
+            <span class="instruction-text">Aperte ENTER para avançar em diálogos.</span>
+          </div>
+        </div>
 
-      <!-- 4 -->
-      <section>
-        <h2>4. MEL E CHAVE</h2>
-        <p>🍯 Colete 5 potes de mel</p>
-        <p>🔑 Uma chave aparecerá no mapa</p>
-        <p>Pegue a chave para avançar de fase</p>
-      </section>
+        <!-- Perigos e Prêmios -->
+        <div class="instruction-col">
+          <h3>🐝 PERIGOS E PRÊMIOS</h3>
+          
+          <div class="instruction-item">
+            <span class="instruction-icon" style="text-shadow: 0 0 10px #ffcc00;">🍯</span>
+            <span class="instruction-text"><strong style="color: #ffaa00;">Mel:</strong> Colete 5 para invocar a chave.</span>
+          </div>
+          <div class="instruction-item">
+            <span class="instruction-icon">🔑</span>
+            <span class="instruction-text"><strong style="color: #ffcc00;">Chave:</strong> Pegue para avançar de fase!</span>
+          </div>
+          <div class="instruction-item">
+            <span class="instruction-icon">🐝</span>
+            <span class="instruction-text"><strong style="color: #ff5555;">Abelhas:</strong> Encostou, perdeu vida.</span>
+          </div>
+          <div class="instruction-item">
+            <span class="instruction-icon">🗡️</span>
+            <span class="instruction-text"><strong style="color: #ff5555;">Espinhos:</strong> Morte instantânea!</span>
+          </div>
+        </div>
 
-      <!-- 5 -->
-      <section>
-        <h2>5. DICAS</h2>
-        <p>Use plataformas móveis com cuidado</p>
-        <p>Planeje seus pulos antes de agir</p>
-        <p>O tempo é limitado — seja rápido</p>
-      </section>
+      </div>
+
+      <div class="signpost-separator"></div>
+
+      <!-- Dicas do Bosque -->
+      <h3 class="signpost-section-title">💡 SEGREDOS DA FLORESTA</h3>
+      <ul class="signpost-body" style="margin-bottom: 15px; text-align: left; padding-left: 20px; list-style-type: square; color: #d1c4a1;">
+        <li style="margin-bottom: 10px;"><strong style="color: #ffaa00;">⏱ Atalhos (Game Over):</strong> Pressione <strong>'R'</strong> para tentar a fase atual novamente, ou <strong>'S'</strong> para reiniciar todo o jogo do zero. Para voltar para o menu rápido, aperte <strong>'H'</strong>.</li>
+        <li style="margin-bottom: 10px;"><strong style="color: #ffaa00;">🎬 Histórias:</strong> Pressione <strong>'P'</strong> a qualquer momento durante os diálogos de história para pular a cutscene e ir direto para as fases.</li>
+        <li style="margin-bottom: 10px;"><strong style="color: #ffaa00;">🛡️ Sobrevivência:</strong> Se você for ferido por uma abelha, o Pooh piscará e ficará invulnerável por exato 1 segundo. Use isso para se reposicionar em segurança!</li>
+        <li style="margin-bottom: 10px;"><strong style="color: #ffaa00;">⏳ Ritmo do Jogo:</strong> O tempo total para encontrar todas as chaves é de duraduros 185 segundos. Acelere nas fases de plataformas móveis!</li>
+      </ul>
 
     </div>
 
-    <button onclick="goBack()">⬅ VOLTAR</button>
+    <button onclick="goBack()">🔙 VOLTAR À AVENTURA</button>
 
   </div>
 
