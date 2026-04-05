@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png" />
+  <link rel="manifest" href="./site.webmanifest" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <title>SuperPoohBear 64 — Cooperativo</title>
+</head>
+
+<body>
+  <div class="bg-stone-800 flex justify-center min-h-screen">
+    <canvas
+      class="m-4 bg-sky-800"
+      id="myCanvas"
+      width="1400"
+      height="900"
+      style="border: 1px solid #ffffff"
+    >
+      Your browser does not support canvas
+    </canvas>
+  </div>
+
+  <video id="finalVideo" style="display: none" width="100%" height="100%">
+    <source src="./assets/final.mp4" type="video/mp4" />
+  </video>
+
+  <!-- Botão Pausar Flutuante -->
+  <button id="floatingPauseBtn" class="fixed top-6 right-6 z-40 bg-[#ffaa00] border-4 border-[#5d3a00] text-[#5d3a00] w-12 h-12 rounded-xl shadow-[0_4px_0_#b37700] hover:translate-y-1 hover:shadow-[0_2px_0_#b37700] active:translate-y-2 active:shadow-none transition-all flex items-center justify-center font-bold font-['Press_Start_2P',_cursive] text-lg">
+    ||
+  </button>
+
+  <!-- Tela de Pausa -->
+  <div id="pauseMenu" class="fixed inset-0 bg-black/80 z-50 items-center justify-center flex-col text-white backdrop-blur-sm" style="font-family: 'Press Start 2P', cursive; display: none;">
+    <h1 class="text-4xl text-yellow-500 mb-10 drop-shadow-lg" style="text-shadow: 4px 4px 0 #2b1a0e;">JOGO PAUSADO</h1>
+    
+    <div class="flex flex-col gap-6 w-80">
+      <button id="resumeBtn" class="bg-gradient-to-b from-[#ffea8c] to-[#ffaa00] border-4 border-[#2b1a0e] text-[#2b1a0e] px-4 py-4 rounded-xl shadow-[0_6px_0_#b37700] hover:translate-y-1 hover:shadow-[0_4px_0_#b37700] active:translate-y-[6px] active:shadow-none transition-all uppercase text-[12px]">▶️ CONTINUAR</button>
+      
+      <button id="restartBtn" class="bg-gradient-to-b from-[#d1c4a1] to-[#a69772] border-4 border-[#2b1a0e] text-[#2b1a0e] px-4 py-4 rounded-xl shadow-[0_6px_0_#756747] hover:translate-y-1 hover:shadow-[0_4px_0_#756747] active:translate-y-[6px] active:shadow-none transition-all uppercase text-[12px]">🔄 REINICIAR FASE</button>
+      
+      <button id="menuBtn" class="bg-gradient-to-b from-[#ff8c8c] to-[#ff5555] border-4 border-[#2b1a0e] text-[#2b1a0e] px-4 py-4 rounded-xl shadow-[0_6px_0_#b30000] hover:translate-y-1 hover:shadow-[0_4px_0_#b30000] active:translate-y-[6px] active:shadow-none transition-all uppercase text-[12px]">🏠 MENU INICIAL</button>
+    </div>
+  </div>
+
+  <!-- Tela de Créditos / Fim de Jogo -->
+  <div id="endScreen" class="fixed inset-0 bg-black/95 z-50 items-center justify-center flex-col text-white" style="font-family: 'Press Start 2P', cursive; display: none;">
+    <h1 class="text-4xl text-yellow-400 mb-8" style="text-shadow: 4px 4px 0 #5d3a00;">FIM DA AVENTURA</h1>
+    
+    <div class="bg-[#4a2f1b] border-8 border-[#2b1a0e] p-8 rounded-2xl max-w-2xl text-center shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]" style="background-image: linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%, transparent 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 75%, transparent 75%, transparent); background-size: 20px 20px;">
+      <h2 class="text-xl text-yellow-500 mb-6" style="text-shadow: 2px 2px 0 #2b1a0e;">HONRAS DO BOSQUE</h2>
+      
+      <p class="text-[10px] sm:text-xs mb-4 text-[#e6dfcc] leading-loose">
+        Obrigado por jogar <strong>Super Pooh 64</strong>!<br>
+        Você & seu parceiro resgataram o Leitão<br>
+        e o Bosque dos 100 Acres está em paz.
+      </p>
+
+      <div class="my-6 border-b-4 border-dashed border-yellow-600/30"></div>
+      
+      <p class="text-[9px] text-yellow-200 mb-2">🐻 DESENVOLVEDOR</p>
+      <p class="text-xs mb-4 text-white drop-shadow-md">Ueslei Carvalho</p>
+      
+      <p class="text-[9px] text-yellow-200 mb-2">🦉 PROFESSOR ORIENTADOR</p>
+      <p class="text-xs text-white drop-shadow-md">Prof. Carlos</p>
+    </div>
+
+    <div class="flex gap-6 mt-10">
+      <button onclick="window.location.reload()" class="bg-gradient-to-b from-[#ffea8c] to-[#ffaa00] border-4 border-[#5d3a00] text-[#5d3a00] px-6 py-4 rounded-xl shadow-[0_6px_0_#b37700] hover:translate-y-1 hover:shadow-[0_4px_0_#b37700] active:translate-y-[6px] active:shadow-none transition-all uppercase text-[10px]">🤝 Jogar De Novo</button>
+      <button onclick="window.location.href='index.html'" class="bg-gradient-to-b from-[#ffea8c] to-[#ffaa00] border-4 border-[#5d3a00] text-[#5d3a00] px-6 py-4 rounded-xl shadow-[0_6px_0_#b37700] hover:translate-y-1 hover:shadow-[0_4px_0_#b37700] active:translate-y-[6px] active:shadow-none transition-all uppercase text-[10px]">🏠 Ir ao Menu</button>
+    </div>
+  </div>
+
+  <style>
+    #finalVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      object-fit: contain;
+      display: none;
+      z-index: 999;
+    }
+  </style>
+
+  <script type="module" src="./coop.js"></script>
+</body>
+
+</html>

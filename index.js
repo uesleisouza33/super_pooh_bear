@@ -21,7 +21,7 @@ window.onload = () => {
   let keySpawned = false;
   let keyCollected = false;
 
-  let timeLeft = 185;
+  let timeLeft = 150;
   let lastTime = Date.now();
   let gameOver = false;
   let changingLevel = false;

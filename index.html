@@ -1,22 +1,26 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <title>SuperPoohBear 64</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <img src="./assets/background.jpg" class="bg" />
-    <div class="menu">
-      <img src="./assets/logo_superpoohbear.png" class="logo" />
-      
-      <div class="buttons">
-        <button onclick="goToGame()">▶ Jogar</button>
-        <button onclick="goToInstructions()">📜 Instruções</button>
-        <button onclick="goToAbout()">ℹ Sobre</button>
-      </div>
-    </div>
 
-    <script src="./menu.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <title>SuperPoohBear 64</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <img src="./assets/background.jpg" class="bg" />
+  <div class="menu">
+    <img src="./assets/logo_superpoohbear.png" class="logo" />
+
+    <div class="buttons">
+      <button onclick="goToGame()">▶ Jogar</button>
+      <button onclick="goToCoop()" style="background: linear-gradient(135deg, #cc5500, #ff8800);">🤝 2 Jogadores (Coop)</button>
+      <button onclick="goToInstructions()">📜 Instruções</button>
+      <button onclick="goToAbout()">ℹ Sobre</button>
+    </div>
+  </div>
+
+  <script src="./menu.js"></script>
+</body>
+
 </html>
