@@ -6,8 +6,8 @@
 
 ## 1. Identificação do Projeto
 - **Título do Projeto:** Super Pooh Bear 64
-- **Identificação do desenvolvedor: [ Ueslei Carvalho: https://github.com/uesleisouza33]**
-- **Identificação product owner:[ Carlos Silva: https://github.com/Prof-Carlos-Senai]**
+- **Desenvolvedor: Ueslei Carvalho: https://github.com/uesleisouza33**
+- **Product Owner: Carlos Silva: https://github.com/Prof-Carlos-Senai**
 
 ---
 
