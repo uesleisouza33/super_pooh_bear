@@ -4,6 +4,11 @@ body {
   font-family: "Press Start 2P", cursive;
 }
 
+body.allow-scroll {
+  overflow-y: auto !important;
+  overflow-x: hidden;
+}
+
 /* 🌄 FUNDO */
 .bg {
   position: fixed; /* 🔥 ESSENCIAL */
@@ -47,43 +52,312 @@ body {
   animation: float 3s ease-in-out infinite;
 }
 
-/* 🎯 BOTÕES */
+/* 🎯 BOTÕES (HONEY BUTTONS) */
 button {
   width: 260px;
   margin: 10px;
-
   padding: 15px;
-
   font-size: 14px;
-
-  border: none;
+  
+  border: 4px solid #5d3a00;
   border-radius: 12px;
 
-  background: linear-gradient(#ffd54f, #ffb300);
+  /* Efeito degradê simulando mel */
+  background: linear-gradient(180deg, #ffea8c 0%, #ffcc00 40%, #ffaa00 100%);
   color: #5d3a00;
 
-  box-shadow: 0 6px 0 #c68400;
-
+  box-shadow: 0 8px 0 #b37700, 0 12px 10px rgba(0,0,0,0.4);
   cursor: pointer;
+  
+  font-family: "Press Start 2P", cursive;
+  text-transform: uppercase;
 
-  transition: 0.15s;
+  transition: all 0.1s ease-in-out;
 }
 
-/* ✨ HOVER */
+/* ✨ HOVER BOTÕES */
 button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 9px 0 #c68400;
+  transform: translateY(2px);
+  box-shadow: 0 6px 0 #b37700, 0 8px 10px rgba(0,0,0,0.4);
+  background: linear-gradient(180deg, #ffea8c 0%, #ffd01a 40%, #ffb31a 100%);
 }
 
-/* 👇 CLICK */
+/* 👇 CLICK BOTÕES */
 button:active {
-  transform: translateY(3px);
-  box-shadow: 0 2px 0 #c68400;
+  transform: translateY(8px);
+  box-shadow: 0 0 0 #b37700, 0 2px 5px rgba(0,0,0,0.4);
 }
 
-/* 🎬 ANIMAÇÃO */
+/* 🎬 ANIMAÇÃO FLOAT */
 @keyframes float {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
   100% { transform: translateY(0px); }
+}
+
+/* ========================================================
+   🪵 PAINÉIS DE MADEIRA E IDENTIDADE VISUAL UNIFICADA
+   ======================================================== */
+
+/* Contêiner Geral do Menu com Scroll */
+.scroll-menu {
+  justify-content: flex-start;
+  padding: 40px 0;
+  height: auto;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Placa principal de Madeira */
+.wood-panel {
+  background: #4a2f1b; /* Cor base da madeira */
+  background-image: 
+    linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%, transparent 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 75%, transparent 75%, transparent);
+  background-size: 20px 20px;
+  
+  border: 6px solid #2b1a0e;
+  border-radius: 12px;
+  
+  padding: 25px 30px;
+  width: 800px;
+  max-width: 90%;
+  
+  text-align: center;
+  margin-bottom: 25px;
+  
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.7), 0 8px 15px rgba(0,0,0,0.5);
+  position: relative;
+  
+  color: #fff8e7; /* Bege claro */
+}
+
+/* Detalhes de 'Pregos' na Madeira */
+.wood-panel::before,
+.wood-panel::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: #1a0f08;
+  border-radius: 50%;
+  box-shadow: inset 1px 1px 2px rgba(255,255,255,0.2);
+}
+
+.wood-panel::before { top: 10px; left: 10px; }
+.wood-panel::after { top: 10px; right: 10px; }
+
+/* 🍯 TIPOGRAFIA TEMÁTICA */
+.honey-text {
+  color: #ffcc00;
+  text-shadow: 2px 2px 0 #5d3a00;
+}
+
+.sub-honey {
+  font-size: 10px;
+  color: #ffaa00;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.wood-panel h2 {
+  font-size: 18px;
+  color: #fff8e7;
+  text-shadow: 2px 2px 0 #2b1a0e;
+  margin: 0 0 15px 0;
+  line-height: 1.4;
+}
+
+.wood-panel h3 {
+  font-size: 14px;
+}
+
+.wood-panel p {
+  font-size: 11px;
+  margin: 10px 0;
+  line-height: 1.6;
+  color: #d1c4a1; /* Bege sutil */
+}
+
+/* Título de seção acima do painel (ex: INSTRUÇÕES, SOBRE) */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.section-header h1 {
+  color: #ffaa00;
+  margin: 0;
+  font-size: 36px;
+  text-shadow: 4px 4px 0 #5d3a00, -2px -2px 0 #ffe066;
+  letter-spacing: 2px;
+}
+.section-header .icon {
+  font-size: 34px;
+}
+
+/* ELEMENTOS ESPECÍFICOS DA TELA SOBRE: MURAL ÚNICO (THE BIG SIGNPOST) */
+.big-signpost {
+  background: #4a2f1b; 
+  background-image: 
+    linear-gradient(45deg, rgba(0,0,0,0.15) 25%, transparent 25%, transparent 50%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.15) 75%, transparent 75%, transparent);
+  background-size: 30px 30px;
+  
+  border: 10px solid #2b1a0e;
+  border-radius: 16px;
+  
+  padding: 40px 50px;
+  width: 800px;
+  max-width: 95%;
+  
+  text-align: center;
+  margin-bottom: 30px;
+  
+  box-shadow: inset 0 0 25px rgba(0,0,0,0.9), 0 15px 30px rgba(0,0,0,0.6);
+  position: relative;
+  
+  color: #fff8e7;
+}
+
+.central-portrait-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.central-portrait {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 8px solid #ffcc00;
+  box-shadow: 0 0 25px rgba(255, 204, 0, 0.4), 0 10px 15px rgba(0,0,0,0.6);
+  overflow: hidden;
+  margin-bottom: 25px;
+  background-color: #fefefe;
+}
+
+.central-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.signpost-title {
+  font-size: 26px;
+  color: #fff;
+  text-shadow: 4px 4px 0 #2b1a0e;
+  margin: 0 0 15px 0;
+  letter-spacing: 2px;
+}
+
+.signpost-subtitle {
+  font-size: 13px;
+  color: #ffaa00;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  font-weight: normal;
+}
+
+.signpost-body {
+  font-size: 11px;
+  line-height: 2;
+  color: #e6dfcc;
+  max-width: 85%;
+  margin: 0 auto;
+}
+
+.signpost-social {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 30px 0;
+}
+
+.signpost-social a {
+  padding: 12px 20px;
+  border: 3px solid #ffaa00;
+  border-radius: 8px;
+  background: rgba(43, 26, 14, 0.9);
+  font-size: 11px;
+  transition: all 0.2s ease-in-out;
+  color: #ffcc00;
+  text-decoration: none;
+  box-shadow: 0 4px 0 #2b1a0e;
+}
+
+.signpost-social a:hover {
+  background: #ffcc00;
+  color: #2b1a0e;
+  box-shadow: 0 6px 0 #b37700;
+  transform: translateY(-2px);
+}
+
+.signpost-separator {
+  height: 4px;
+  background: repeating-linear-gradient(90deg, #ffaa00, #ffaa00 12px, transparent 12px, transparent 24px);
+  margin: 40px auto;
+  border-radius: 2px;
+  width: 70%;
+  opacity: 0.7;
+}
+
+.signpost-section-title {
+  font-size: 14px;
+  color: #ff5555;
+  text-shadow: 2px 2px 0 #2b1a0e;
+  margin-bottom: 20px;
+}
+
+/* ========================================================
+   📜 GRADES DA PÁGINA DE INSTRUÇÕES
+   ======================================================== */
+.instructions-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.instruction-col {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  padding: 25px 20px;
+  border: 2px solid rgba(255, 204, 0, 0.15);
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.instruction-col h3 {
+  font-size: 13px;
+  color: #ffcc00;
+  text-shadow: 2px 2px 0 #2b1a0e;
+  margin-top: 0;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.instruction-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.instruction-icon {
+  font-size: 20px;
+  margin-right: 15px;
+  min-width: 35px;
+  text-align: center;
+}
+
+.instruction-text {
+  font-size: 10px;
+  line-height: 1.8;
+  color: #e6dfcc;
 }

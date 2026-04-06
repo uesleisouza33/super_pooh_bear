@@ -4,6 +4,7 @@ import Plataform from "./models/Plataform.js";
 import Key from "./models/Key.js";
 import Enemy from "./models/Enemy.js";
 import Spike from "./models/Spike.js";
+import { initAudio, playCoinSound, playHitSound, playWinSound } from "./models/AudioManager.js";
 
 window.onload = () => {
   const canvas = document.getElementById("myCanvas");
@@ -20,7 +21,7 @@ window.onload = () => {
   let keySpawned = false;
   let keyCollected = false;
 
-  let timeLeft = 185;
+  let timeLeft = 150;
   let lastTime = Date.now();
   let gameOver = false;
   let changingLevel = false;
@@ -33,12 +34,26 @@ window.onload = () => {
   let showKeyMessage = false;
   let keyMessageTimer = 0;
 
+  let isPaused = false;
+
   //  CUTSCENE
   let inCutscene = true;
   let cutsceneIndex = 0;
   let textProgress = 0;
 
   const video = document.getElementById("finalVideo");
+  const endScreen = document.getElementById("endScreen");
+
+  const pauseMenu = document.getElementById("pauseMenu");
+  const floatingPauseBtn = document.getElementById("floatingPauseBtn");
+  const resumeBtn = document.getElementById("resumeBtn");
+  const restartBtn = document.getElementById("restartBtn");
+  const menuBtn = document.getElementById("menuBtn");
+
+  video.onended = () => {
+    video.style.display = "none";
+    endScreen.style.display = "flex";
+  };
 
   const tiggerImg = loadImage("./assets/tigger.png");
   const eeyoreImg = loadImage("./assets/eeyore.png");
@@ -91,6 +106,8 @@ window.onload = () => {
     if (loaded === total) loop();
   }
 
+
+
   function loadImage(src) {
     const img = new Image();
     img.onload = checkLoaded;
@@ -98,22 +115,50 @@ window.onload = () => {
     return img;
   }
 
+  function togglePause() {
+    if (inCutscene || gameOver || video.style.display === "block") return;
+
+    isPaused = !isPaused;
+
+    if (isPaused) {
+      pauseMenu.style.display = "flex";
+      floatingPauseBtn.style.display = "none";
+    } else {
+      pauseMenu.style.display = "none";
+      floatingPauseBtn.style.display = "flex";
+      lastTime = Date.now(); // Restaura o relógio ao voltar
+    }
+  }
+
+  floatingPauseBtn.addEventListener("click", togglePause);
+  resumeBtn.addEventListener("click", togglePause);
+  restartBtn.addEventListener("click", () => {
+    isPaused = false;
+    pauseMenu.style.display = "none";
+    floatingPauseBtn.style.display = "flex";
+    health = maxHealth;
+    loadLevel(currentLevel);
+    timeLeft = 185;
+  });
+  menuBtn.addEventListener("click", () => {
+    window.location.replace('index.html');
+  });
+
   // ASSETS
-  const bgSky = loadImage("./assets/ceu.png");
+  const bgForest = loadImage("./assets/forest.jpg");
   const platformImg = loadImage("./assets/plataforms/grass_plataform.png");
   const honeyPotImg = loadImage("./assets/honeyPot.png");
   const keyImg = loadImage("./assets/key.png");
   const enemyImg = loadImage("./assets/bee.png");
   const spikeImg = loadImage("./assets/spike.png");
   const gameOverImg = loadImage("./assets/gameover.jpg");
-  const mountains = loadImage("./assets/montanhas.png");
 
   const keys = {};
 
   document.addEventListener("keydown", (e) => {
+    initAudio(); // Libera o sintetizador quando o usuário aperta qualquer botão
     keys[e.key.toLowerCase()] = true;
 
-    // CUTSCENE
     if (inCutscene && e.key === "Enter") {
       if (textProgress < cutscene[cutsceneIndex].text.length) {
         textProgress = cutscene[cutsceneIndex].text.length;
@@ -144,6 +189,19 @@ window.onload = () => {
           inCutscene = false;
         }
       }
+    }
+
+    if (inCutscene && e.key.toLowerCase() === "p") {
+      inCutscene = false;
+      currentLevel = 1;
+      loadLevel(currentLevel);
+      gameOver = false;
+      timeLeft = 185;
+    }
+
+    // PAUSA
+    if ((e.key === "Escape" || e.key.toLowerCase() === "p")) {
+      togglePause();
     }
 
     if (gameOver) {
@@ -180,7 +238,9 @@ window.onload = () => {
 
   // fases
   function loadLevel(level) {
-    health = maxHealth;
+    if (level === 1 || gameOver) {
+      health = maxHealth;
+    }
     invulnerable = false;
     enemies.length = 0;
     spikes.length = 0;
@@ -193,33 +253,33 @@ window.onload = () => {
     plataforms.length = 0;
 
     pooh.x = 50;
-    pooh.y = 450;
+    pooh.y = 700;
 
     // chão base
-    plataforms.push(new Plataform(-650, 550, 3000, 500, platformImg));
+    plataforms.push(new Plataform(-650, 800, 3000, 800, platformImg));
 
     // =========================
     // FASE 1
     if (level === 1) {
       plataforms.push(
-        new Plataform(200, 450, 120, 40, platformImg),
-        new Plataform(350, 420, 120, 40, platformImg),
-        new Plataform(550, 380, 120, 40, platformImg),
-        new Plataform(750, 300, 120, 40, platformImg, {
+        new Plataform(200, 700, 120, 40, platformImg),
+        new Plataform(350, 670, 120, 40, platformImg),
+        new Plataform(550, 630, 120, 40, platformImg),
+        new Plataform(750, 550, 120, 40, platformImg, {
           type: "moving",
           axis: "vertical",
           range: 120,
           speed: 3,
         }),
-        new Plataform(950, 360, 120, 40, platformImg),
-        new Plataform(1150, 300, 120, 40, platformImg),
-        new Plataform(1350, 250, 120, 40, platformImg, {
+        new Plataform(950, 610, 120, 40, platformImg),
+        new Plataform(1150, 550, 120, 40, platformImg),
+        new Plataform(1350, 500, 120, 40, platformImg, {
           type: "moving",
           axis: "horizontal",
           range: 50,
           speed: 3,
         }),
-        new Plataform(1550, 250, 120, 40, platformImg, {
+        new Plataform(1550, 500, 120, 40, platformImg, {
           type: "moving",
           axis: "horizontal",
           range: 45,
@@ -228,39 +288,39 @@ window.onload = () => {
       );
 
       honeyPots.push(
-        new HoneyPot(220, 400, honeyPotImg),
-        new HoneyPot(570, 330, honeyPotImg),
-        new HoneyPot(750, 240, honeyPotImg),
-        new HoneyPot(950, 310, honeyPotImg),
-        new HoneyPot(1550, 200, honeyPotImg),
+        new HoneyPot(220, 650, honeyPotImg),
+        new HoneyPot(570, 580, honeyPotImg),
+        new HoneyPot(750, 490, honeyPotImg),
+        new HoneyPot(950, 560, honeyPotImg),
+        new HoneyPot(1550, 450, honeyPotImg),
       );
 
-      spikes.push(new Spike(280, 420, 30, 30, spikeImg));
+      spikes.push(new Spike(280, 670, 30, 30, spikeImg));
     }
 
     // =========================
     // FASE 2
     if (level === 2) {
       plataforms.push(
-        new Plataform(200, 450, 120, 40, platformImg),
-        new Plataform(400, 350, 120, 40, platformImg),
-        new Plataform(600, 450, 120, 40, platformImg),
-        new Plataform(800, 320, 120, 40, platformImg),
-        new Plataform(1000, 450, 120, 40, platformImg),
-        new Plataform(1200, 350, 120, 40, platformImg, {
+        new Plataform(200, 700, 120, 40, platformImg),
+        new Plataform(400, 600, 120, 40, platformImg),
+        new Plataform(600, 700, 120, 40, platformImg),
+        new Plataform(800, 570, 120, 40, platformImg),
+        new Plataform(1000, 700, 120, 40, platformImg),
+        new Plataform(1200, 600, 120, 40, platformImg, {
           type: "moving",
           axis: "horizontal",
           range: 100,
           speed: 3,
         }),
-        new Plataform(1450, 300, 120, 40, platformImg),
-        new Plataform(1600, 350, 120, 40, platformImg, {
+        new Plataform(1450, 550, 120, 40, platformImg),
+        new Plataform(1600, 600, 120, 40, platformImg, {
           type: "moving",
           axis: "vertical",
           range: 50,
           speed: 3,
         }),
-        new Plataform(1750, 300, 120, 40, platformImg, {
+        new Plataform(1750, 550, 120, 40, platformImg, {
           type: "moving",
           axis: "vertical",
           range: 180,
@@ -269,16 +329,16 @@ window.onload = () => {
       );
 
       honeyPots.push(
-        new HoneyPot(200, 400, honeyPotImg),
-        new HoneyPot(400, 300, honeyPotImg),
-        new HoneyPot(600, 400, honeyPotImg),
-        new HoneyPot(800, 270, honeyPotImg),
-        new HoneyPot(1450, 210, honeyPotImg),
+        new HoneyPot(200, 650, honeyPotImg),
+        new HoneyPot(400, 550, honeyPotImg),
+        new HoneyPot(600, 650, honeyPotImg),
+        new HoneyPot(800, 520, honeyPotImg),
+        new HoneyPot(1450, 460, honeyPotImg),
       );
 
       spikes.push(
-        new Spike(485, 320, 30, 30, spikeImg),
-        new Spike(885, 290, 30, 30, spikeImg),
+        new Spike(485, 570, 30, 30, spikeImg),
+        new Spike(885, 540, 30, 30, spikeImg),
       );
     }
 
@@ -286,38 +346,38 @@ window.onload = () => {
     // FASE 3
     if (level === 3) {
       plataforms.push(
-        new Plataform(300, 450, 120, 40, platformImg),
-        new Plataform(300, 350, 120, 40, platformImg),
-        new Plataform(300, 250, 120, 40, platformImg),
-        new Plataform(300, 150, 120, 40, platformImg),
+        new Plataform(300, 700, 120, 40, platformImg),
+        new Plataform(300, 600, 120, 40, platformImg),
+        new Plataform(300, 500, 120, 40, platformImg),
+        new Plataform(300, 400, 120, 40, platformImg),
 
-        new Plataform(550, 200, 120, 40, platformImg),
-        new Plataform(800, 150, 300, 40, platformImg),
-        new Plataform(1075, 200, 120, 40, platformImg),
-        new Plataform(1200, 220, 120, 40, platformImg),
+        new Plataform(550, 450, 120, 40, platformImg),
+        new Plataform(800, 400, 300, 40, platformImg),
+        new Plataform(1075, 450, 120, 40, platformImg),
+        new Plataform(1200, 470, 120, 40, platformImg),
 
-        new Plataform(1400, 250, 120, 40, platformImg),
-        new Plataform(1600, 250, 120, 40, platformImg),
+        new Plataform(1400, 500, 120, 40, platformImg),
+        new Plataform(1600, 500, 120, 40, platformImg),
       );
 
       honeyPots.push(
-        new HoneyPot(300, 400, honeyPotImg),
-        new HoneyPot(300, 300, honeyPotImg),
-        new HoneyPot(300, 200, honeyPotImg),
-        new HoneyPot(800, 100, honeyPotImg),
-        new HoneyPot(1400, 200, honeyPotImg),
+        new HoneyPot(300, 650, honeyPotImg),
+        new HoneyPot(300, 550, honeyPotImg),
+        new HoneyPot(300, 450, honeyPotImg),
+        new HoneyPot(800, 350, honeyPotImg),
+        new HoneyPot(1400, 450, honeyPotImg),
       );
 
       spikes.push(
-        new Spike(1100, 170, 30, 30, spikeImg),
-        new Spike(1130, 170, 30, 30, spikeImg),
-        new Spike(1160, 170, 30, 30, spikeImg),
+        new Spike(1100, 420, 30, 30, spikeImg),
+        new Spike(1130, 420, 30, 30, spikeImg),
+        new Spike(1160, 420, 30, 30, spikeImg),
       );
 
       enemies.push(
-        new Enemy(300, 300, 50, 50, enemyImg, 100, 2),
-        new Enemy(300, 75, 50, 50, enemyImg, 50, 1.5),
-        new Enemy(1800, 75, 50, 50, enemyImg, 120, 2),
+        new Enemy(300, 550, 50, 50, enemyImg, 100, 2),
+        new Enemy(300, 325, 50, 50, enemyImg, 50, 1.5),
+        new Enemy(1800, 325, 50, 50, enemyImg, 120, 2),
       );
     }
 
@@ -325,46 +385,46 @@ window.onload = () => {
     // FASE 4
     if (level === 4) {
       plataforms.push(
-        new Plataform(200, 450, 120, 40, platformImg),
+        new Plataform(200, 700, 120, 40, platformImg),
 
-        new Plataform(400, 350, 120, 40, platformImg, {
+        new Plataform(400, 600, 120, 40, platformImg, {
           type: "moving",
           axis: "horizontal",
           range: 150,
           speed: 3,
         }),
 
-        new Plataform(700, 300, 120, 40, platformImg),
+        new Plataform(700, 550, 120, 40, platformImg),
 
-        new Plataform(900, 250, 120, 40, platformImg, {
+        new Plataform(900, 500, 120, 40, platformImg, {
           type: "moving",
           axis: "vertical",
           range: 150,
           speed: 2,
         }),
 
-        new Plataform(1200, 200, 120, 40, platformImg),
+        new Plataform(1200, 450, 120, 40, platformImg),
 
-        new Plataform(1400, 180, 120, 40, platformImg, {
+        new Plataform(1400, 430, 120, 40, platformImg, {
           type: "moving",
           axis: "horizontal",
           range: 80,
           speed: 4,
         }),
 
-        new Plataform(1650, 150, 150, 40, platformImg),
+        new Plataform(1650, 400, 150, 40, platformImg),
       );
 
       honeyPots.push(
-        new HoneyPot(200, 400, honeyPotImg),
-        new HoneyPot(400, 300, honeyPotImg),
-        new HoneyPot(900, 200, honeyPotImg),
-        new HoneyPot(1400, 130, honeyPotImg),
-        new HoneyPot(1650, 100, honeyPotImg),
+        new HoneyPot(200, 650, honeyPotImg),
+        new HoneyPot(400, 550, honeyPotImg),
+        new HoneyPot(900, 450, honeyPotImg),
+        new HoneyPot(1400, 380, honeyPotImg),
+        new HoneyPot(1650, 350, honeyPotImg),
       );
 
       for (let x = 0; x < 2000; x += 40) {
-        spikes.push(new Spike(x + 500, 510, 40, 40, spikeImg));
+        spikes.push(new Spike(x + 500, 760, 40, 40, spikeImg));
       }
     }
 
@@ -372,39 +432,39 @@ window.onload = () => {
     // FASE 5
     if (level === 5) {
       plataforms.push(
-        new Plataform(200, 450, 100, 40, platformImg),
-        new Plataform(350, 380, 100, 40, platformImg),
-        new Plataform(550, 300, 100, 40, platformImg),
+        new Plataform(200, 700, 100, 40, platformImg),
+        new Plataform(350, 630, 100, 40, platformImg),
+        new Plataform(550, 550, 100, 40, platformImg),
 
-        new Plataform(750, 250, 100, 40, platformImg, {
+        new Plataform(750, 500, 100, 40, platformImg, {
           type: "moving",
           axis: "horizontal",
           range: 80,
           speed: 4,
         }),
 
-        new Plataform(1000, 200, 100, 40, platformImg),
+        new Plataform(1000, 450, 100, 40, platformImg),
 
-        new Plataform(1250, 160, 120, 40, platformImg),
+        new Plataform(1250, 410, 120, 40, platformImg),
 
-        new Plataform(1500, 140, 320, 40, platformImg),
+        new Plataform(1500, 390, 320, 40, platformImg),
       );
 
       honeyPots.push(
-        new HoneyPot(200, 400, honeyPotImg),
-        new HoneyPot(350, 330, honeyPotImg),
-        new HoneyPot(550, 250, honeyPotImg),
-        new HoneyPot(1000, 150, honeyPotImg),
-        new HoneyPot(1500, 80, honeyPotImg),
+        new HoneyPot(200, 650, honeyPotImg),
+        new HoneyPot(350, 580, honeyPotImg),
+        new HoneyPot(550, 500, honeyPotImg),
+        new HoneyPot(1000, 400, honeyPotImg),
+        new HoneyPot(1500, 330, honeyPotImg),
       );
 
       for (let x = 0; x < 2000; x += 40) {
-        spikes.push(new Spike(x + 500, 510, 40, 40, spikeImg));
+        spikes.push(new Spike(x + 500, 760, 40, 40, spikeImg));
       }
 
       enemies.push(
-        new Enemy(300, 300, 50, 50, enemyImg, 100, 2),
-        new Enemy(1800, 50, 50, 50, enemyImg, 120, 2),
+        new Enemy(300, 550, 50, 50, enemyImg, 100, 2),
+        new Enemy(1800, 300, 50, 50, enemyImg, 120, 2),
       );
     }
   }
@@ -438,9 +498,11 @@ window.onload = () => {
 
     // CUTSCENE
     if (inCutscene) {
-      // FUNDO
-      ctx.drawImage(bgSky, 0, 0, canvas.width, canvas.height);
-      ctx.drawImage(mountains, 0, 0, canvas.width, canvas.height);
+      const W = canvas.width;
+
+      // Fundo Fixo Cutscene
+      ctx.drawImage(bgForest, 0, 0, canvas.width, canvas.height);
+
       ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -450,64 +512,68 @@ window.onload = () => {
 
       if (textProgress < text.length) textProgress += 1;
 
-      // PERSONAGEM
-      ctx.drawImage(current.img, 80, canvas.height - 320, 180, 180);
+      // PERSONAGEM (Avatar Crop 8-bit Portrait)
+      const portraitX = 160;
+      const portraitY = canvas.height - 230;
+      const radius = 90;
 
-      // CAIXA DE TEXTO
-      ctx.fillStyle = "rgba(0,0,0,0.85)";
-      ctx.fillRect(50, canvas.height - 140, canvas.width - 100, 100);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(portraitX, portraitY, radius, 0, Math.PI * 2);
+      ctx.fillStyle = "#4a2f1b"; // fundo escuro se vazar verde da imagem
+      ctx.fill();
+      ctx.clip(); // recorta
+
+      // Imagem do Avatar
+      ctx.drawImage(current.img, portraitX - radius, portraitY - radius, radius * 2, radius * 2);
+      ctx.restore();
+
+      // Anel Dourado (Honey Frame)
+      ctx.beginPath();
+      ctx.arc(portraitX, portraitY, radius, 0, Math.PI * 2);
+      ctx.lineWidth = 10;
+      ctx.strokeStyle = "#ffcc00";
+      ctx.stroke();
+
+      // CAIXA DE TEXTO (Padrão Bosque 100 Acres)
+      ctx.fillStyle = "rgba(43, 26, 14, 0.95)";
+      ctx.fillRect(90, canvas.height - 180, canvas.width - 200, 140);
 
       // borda
-      ctx.strokeStyle = "white";
-      ctx.lineWidth = 2;
-      ctx.strokeRect(50, canvas.height - 140, canvas.width - 100, 100);
+      ctx.strokeStyle = "#ffaa00";
+      ctx.lineWidth = 6;
+      ctx.strokeRect(90, canvas.height - 180, canvas.width - 200, 140);
 
-      // TEXTO
-      ctx.fillStyle = "white";
-      ctx.font = "20px Arial";
-      ctx.fillText(text.substring(0, textProgress), 70, canvas.height - 90);
+      // TEXTO PRINCIPAL
+      ctx.fillStyle = "#fff8e7";
+      ctx.font = "18px 'Press Start 2P', Arial";
+      ctx.fillText(text.substring(0, textProgress), 130, canvas.height - 100);
 
-      //
-      ctx.font = "14px Arial";
+      // LEGENDAS INFERIORES
+      ctx.fillStyle = "#ffcc00";
+      ctx.font = "10px 'Press Start 2P', Arial";
       ctx.fillText(
-        "ENTER para continuar... | ",
-        canvas.width - 425,
-        canvas.height - 20,
+        "ENTER para continuar...   |   Aperte P para pular a história",
+        130,
+        canvas.height - 60
       );
-      ctx.fillText(
-        "  Pressione P para pular as falas",
-        canvas.width - 270,
-        canvas.height - 20,
-      );
-
-      document.addEventListener("keydown", (e) => {
-        if (e.key.toLowerCase() === "p") {
-          inCutscene = false;
-          currentLevel = 1;
-          loadLevel(currentLevel);
-          gameOver = false;
-          timeLeft = 185;
-
-        }
-      });
 
       return requestAnimationFrame(loop);
     }
 
     // time
-    if (!gameOver && !inCutscene) {
+    if (!gameOver && !inCutscene && !isPaused) {
       const now = Date.now();
       const delta = (now - lastTime) / 1000;
       lastTime = now;
 
       timeLeft -= delta;
       if (timeLeft <= 0) gameOver = true;
-      else {
-        lastTime = Date.now();
-      }
+    } else if (isPaused || inCutscene) {
+      lastTime = Date.now(); // Mantém relógio zerado
     }
 
-    if (invulnerable) {
+    if (invulnerable && !isPaused) {
       invulTime -= 0.016;
 
       if (invulTime <= 0) {
@@ -516,28 +582,26 @@ window.onload = () => {
     }
 
     // camera
-    camera.x = pooh.x - canvas.width / 2;
-    camera.y = pooh.y - canvas.height / 2;
-
-    ctx.drawImage(bgSky, 0, 0, canvas.width, canvas.height);
-
-    pooh.update(plataforms);
-
     const worldWidth = 2000;
-    const worldHeight = 1000;
+    const worldHeight = 1500;
 
-    camera.x = Math.max(0, Math.min(camera.x, worldWidth - canvas.width));
-    camera.y = Math.max(0, Math.min(camera.y, worldHeight - canvas.height));
+    camera.x = Math.max(0, Math.min(pooh.x - canvas.width / 2, worldWidth - canvas.width));
+    camera.y = Math.max(0, Math.min(pooh.y - (canvas.height * 0.7), worldHeight - canvas.height));
 
-    pooh.x = Math.max(0, Math.min(pooh.x, worldWidth - pooh.w));
-    pooh.y = Math.max(0, Math.min(pooh.y, worldHeight - pooh.h));
+    // ================= FUNDO ESTÁTICO (Subido) ================= //
+    // Ajuste fino: -30 de offset em vez de -150 para que a raiz das árvores bata na grama
+    ctx.drawImage(bgForest, 0, -30, canvas.width, canvas.height + 30);
+    // ===================================================== //
+
+    if (!isPaused) pooh.update(plataforms);
 
     // ENEMIES
     for (let e of enemies) {
-      e.update();
+      if (!isPaused) e.update();
       e.draw(ctx, camera);
 
-      if (e.checkCollision(pooh) && !invulnerable) {
+      if (!isPaused && e.checkCollision(pooh) && !invulnerable) {
+        playHitSound();
         health--;
         invulnerable = true;
         invulTime = 1;
@@ -552,24 +616,28 @@ window.onload = () => {
     for (let s of spikes) {
       s.draw(ctx, camera);
 
-      if (s.checkCollision(pooh)) {
+      if (!isPaused && s.checkCollision(pooh) && !gameOver) {
+        playHitSound();
         gameOver = true;
       }
     }
 
     for (let p of plataforms) {
-      p.update();
+      if (!isPaused) p.update();
       p.draw(ctx, camera);
     }
 
     for (let pot of honeyPots) {
-      if (pot.update(pooh)) collected++;
+      if (!isPaused && pot.update(pooh)) {
+        collected++;
+        playCoinSound();
+      }
       pot.draw(ctx, camera);
     }
 
     // key spawn
     if (collected >= 5 && !keySpawned) {
-      key = new Key(1800, 50, keyImg);
+      key = new Key(1800, 300, keyImg);
       keySpawned = true;
 
       showKeyMessage = true;
@@ -578,24 +646,27 @@ window.onload = () => {
 
     // key update
     if (key) {
-      const got = key.update(pooh);
+      if (!isPaused) {
+        const got = key.update(pooh);
 
-      if (got && !changingLevel) {
-        keyCollected = true;
-        totalKeys++;
-        changingLevel = true;
+        if (got && !changingLevel) {
+          playWinSound();
+          keyCollected = true;
+          totalKeys++;
+          changingLevel = true;
 
-        setTimeout(() => {
-          nextLevel();
-          changingLevel = false;
-        }, 300);
+          setTimeout(() => {
+            nextLevel();
+            changingLevel = false;
+          }, 300);
+        }
       }
 
       key.draw(ctx, camera);
     }
 
     // key notification
-    if (showKeyMessage) {
+    if (showKeyMessage && !isPaused) {
       keyMessageTimer -= 0.016;
 
       ctx.fillStyle = "rgba(0,0,0,0.7)";
@@ -612,39 +683,44 @@ window.onload = () => {
       pooh.draw(ctx, camera);
     }
 
-    // HUD
-    // fundo
-    ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
-    ctx.fillRect(10, 10, 220, 110);
+    // HUD DO JOGO OTIMIZADO (ESTILO BOSQUE)
 
-    // borda
-    ctx.strokeStyle = "#fff";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(10, 10, 220, 110);
+    // Fundo de Madeira
+    ctx.fillStyle = "rgba(43, 26, 14, 0.85)";
+    ctx.fillRect(20, 20, 280, 130);
 
-    // título
-    ctx.fillStyle = "#FFD700";
-    ctx.font = "bold 16px Arial";
-    ctx.fillText(`FASE ${currentLevel}`, 20, 30);
+    // Borda da Madeira
+    ctx.strokeStyle = "#ffaa00";
+    ctx.lineWidth = 4;
+    ctx.strokeRect(20, 20, 280, 130);
 
-    ctx.fillStyle = "red";
-    ctx.fillText(`❤️${health}`, 180, 30);
-    // MEL
-    ctx.drawImage(honeyPotImg, 20, 45, 20, 20);
-    ctx.fillStyle = "white";
-    ctx.font = "14px Arial";
-    ctx.fillText(`${collected}/5`, 50, 60);
+    // Título da Fase
+    ctx.fillStyle = "#ffcc00";
+    ctx.font = "16px 'Press Start 2P', Arial";
+    ctx.fillText(`FASE ${currentLevel}`, 40, 50);
 
-    // CHAVES
-    ctx.drawImage(keyImg, 20, 70, 20, 20);
-    ctx.fillText(`${totalKeys}/${maxKeys}`, 50, 85);
+    // Vidas do Pooh
+    ctx.fillStyle = "#ff5555";
+    ctx.fillText(`❤️ ${health}`, 200, 50);
 
-    // ⏱ TEMPO
-    if (timeLeft < 20) ctx.fillStyle = "red";
-    else if (timeLeft < 40) ctx.fillStyle = "yellow";
-    else ctx.fillStyle = "white";
+    // Contagem de Mel
+    ctx.drawImage(honeyPotImg, 40, 70, 25, 25);
+    ctx.fillStyle = "#fff8e7";
+    ctx.font = "14px 'Press Start 2P', Arial";
+    ctx.fillText(`${collected}/5`, 75, 90);
 
-    ctx.fillText(` ⏱  ${Math.ceil(timeLeft)}s`, 20, 105);
+    // Contagem de Chaves
+    ctx.drawImage(keyImg, 40, 105, 25, 25);
+    ctx.fillText(`${totalKeys}/${maxKeys}`, 75, 125);
+
+    // ⏱ TEMPO (Alerta Dinâmico)
+    if (timeLeft < 20) ctx.fillStyle = "#ff5555";
+    else if (timeLeft < 40) ctx.fillStyle = "#ffaa00";
+    else ctx.fillStyle = "#fff8e7";
+
+    ctx.textAlign = "right";
+    ctx.fillText(`⏱ ${Math.ceil(timeLeft)}s`, 280, 125);
+    ctx.textAlign = "left"; // Restaura para futuros desenhos
 
     requestAnimationFrame(loop);
   }

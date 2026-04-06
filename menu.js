@@ -2,6 +2,10 @@ function goToGame() {
   window.location.href = "game.html";
 }
 
+function goToCoop() {
+  window.location.href = "coop.html";
+}
+
 function goToInstructions() {
   window.location.href = "instructions.html";
 }
